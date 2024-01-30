@@ -2,32 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* HOME */
+.content-title {
+  @apply max-w-[720px] text-center text-gray-800 font-semibold  text-4xl
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.content-paragraph {
+  @apply max-w-[720px] text-gray-500 text-center
+}
+
+.span-decoration {
+  @apply text-teal-500 underline decoration-teal-500
+}
+
+.input-form {
+  @apply w-full rounded-lg border border-teal-400 bg-teal-50 outline-teal-500 px-3.5 py-2
+}
+
+@keyframes blinkColor {
+
+  0%,
+  50%,
+  100% {
+    background-color: #2dd4bf;
+  }
+
+  25%,
+  75% {
+    background-color: #22d3ee;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.blinking-color {
+  animation: blinkColor 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
