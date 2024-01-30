@@ -31,7 +31,6 @@ const Home = () => {
       socket = io();
 
       socket.on("receive-message", (data: MessageDocument) => {
-        console.log(data)
         setAllMessages((pre: MessageDocument[]) => [...pre, data]);
       });
     }
@@ -47,8 +46,6 @@ const Home = () => {
 
   function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
-
-    console.log("emitted");
 
     socket.emit("send-message", {
       name,

@@ -28,7 +28,7 @@ export default function SocketHandler(req: any, res: any) {
         socket.emit("receive-message", msg);
       });
     } catch (error) {
-      console.error("Error retrieving messages:", error);
+      console.error("Error retrieving messages:");
     }
 
     socket.on("send-message", async (obj: MessageDocument) => {
@@ -37,7 +37,7 @@ export default function SocketHandler(req: any, res: any) {
         const message = await MessageModel.create(obj);
         io.emit("receive-message", message);
       } catch (error) {
-        console.error("Error sending message:", error);
+        console.error("Error sending message:");
       }
     });
   });

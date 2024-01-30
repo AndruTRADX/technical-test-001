@@ -28,12 +28,10 @@ const SignUpPage = () => {
 
     setLoading(true);
 
-    const res = await fetch(endpoints.user.logIn, {
+    const res = await fetch("/api/auth/users", {
       method: "POST",
       body: JSON.stringify(formData),
     }).then((res) => res.json());
-
-    console.log(res);
 
     setLoading(false);
   };
