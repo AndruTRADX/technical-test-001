@@ -4,7 +4,7 @@ import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/20/solid";
 import { ButtonTypeSubmit } from "@/components/common/Button";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions"; 
 import AuthProfileMenu from "@/components/common/AuthProfileMenu";
 
 export default async function Home() {
