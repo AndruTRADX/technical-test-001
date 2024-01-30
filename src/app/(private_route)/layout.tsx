@@ -12,7 +12,9 @@ const layout = async ({ children }: Props) => {
 
   if (!session?.user) redirect("/login");
 
-  return <>{children}</>;
+  return (
+    <main className="flex min-h-screen bg-white h-screen">{children}</main>
+  );
 };
 
 export default layout;

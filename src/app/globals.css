@@ -19,6 +19,28 @@
   @apply w-full rounded-lg border border-teal-400 bg-teal-50 outline-teal-500 px-3.5 py-2
 }
 
+/* Chat styles */
+.border-message-received {
+  border-radius: 12px 12px 12px 0px;
+}
+
+.border-message-send {
+  border-radius: 12px 12px 0px 12px;
+}
+
+/* Form Contacts */
+.form_contacts-input {
+  @apply w-full outline-0 bg-gray-100 rounded-xl p-3 text-sm font-semibold text-gray-800 placeholder:text-gray-400;
+}
+
+.chat-textarea {
+  @apply w-full outline-0 border border-gray-200 min-h-[46px] max-h-[90px] rounded-xl p-3 text-sm font-normal text-gray-800 placeholder:text-gray-400;
+}
+
+.contact_modal-input {
+  @apply w-full outline-0 border border-gray-200 min-h-[46px] max-h-[90px] max-w-[300px] rounded-xl p-3 text-sm font-medium text-gray-600 placeholder:text-gray-400;
+}
+
 @keyframes blinkColor {
 
   0%,
