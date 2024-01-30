@@ -7,19 +7,25 @@ import { useSession } from "next-auth/react";
 
 import { CameraIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import Message from "@/components/common/Message";
+import AuthProfileMenu from "@/components/common/AuthProfileMenu";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 interface MessageData {
   username: string;
   message: string;
+  email: string;
 }
 
 const Home = () => {
   const { data } = useSession();
 
   const [message, setMessage] = useState("");
-  const [username, setUsername] = useState(data?.user?.name);
   const [allMessages, setAllMessages] = useState<MessageData[]>([]);
+
+  const username = data?.user?.name;
+  const email = data?.user?.email;
+
+  const userDataCharged = username && email;
 
   useEffect(() => {
     socketInitializer();
@@ -43,12 +49,29 @@ const Home = () => {
     socket.emit("send-message", {
       username,
       message,
+      email,
     });
     setMessage("");
   }
 
   return (
     <div className="flex flex-col w-full border-x border-gray-300">
+      <div className="flex items-center justify-between gap-2 border-b border-gray-300 px-5 py-3 text-gray-600">
+        <div className="flex items-center gap-2">
+          <div
+            className={`${
+              userDataCharged ? "bg-green-500" : "bg-orange-500"
+            } w-3 h-3 rounded-full`}
+          />
+          <p>
+            <span className="font-medium ">
+              {`${username || '...'} - ${email || '...'}`}
+            </span>
+          </p>
+        </div>
+
+        <AuthProfileMenu />
+      </div>
       {
         <div className="w-full h-full p-6 flex flex-col overflow-y-auto">
           {allMessages.map(({ username, message }, index) => (
@@ -58,10 +81,6 @@ const Home = () => {
       }
 
       <div className="flex justify-between gap-x-8 items-center w-full border-y border-gray-300 p-6">
-        <button>
-          <CameraIcon className="w-6 h-6 text-gray800" />
-        </button>
-
         <form
           className="w-full flex items-center gap-4"
           onSubmit={handleSubmit}
