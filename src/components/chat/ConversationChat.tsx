@@ -1,6 +1,6 @@
 "use client";
 
-import MessageReceived from "@/components/common/MessageReceived";
+import MessageReceived from "@/components/common/Message";
 import MessageSend from "@/components/common/MessageSend";
 
 const messageSend1 = [

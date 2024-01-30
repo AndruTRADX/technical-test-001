@@ -1,5 +1,10 @@
 export const endpoints = {
   user: {
-    logIn: `${process.env.API_PATH}/auth/users`,
-  }
+    logIn: `http://localhost:3000/api/auth/users`,
+  },
+  socket: `${process.env.API_PATH}/socket`,
+}
+
+export const envData = {
+  port: `${process.env.API_PATH}`
 }
