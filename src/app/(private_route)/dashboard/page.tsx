@@ -5,41 +5,45 @@ import React, { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useSession } from "next-auth/react";
 
-import { CameraIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import Message from "@/components/common/Message";
 import AuthProfileMenu from "@/components/common/AuthProfileMenu";
+import { MessageDocument } from "@/types/message.types";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
-interface MessageData {
-  username: string;
-  message: string;
-  email: string;
-}
 
 const Home = () => {
   const { data } = useSession();
 
   const [message, setMessage] = useState("");
-  const [allMessages, setAllMessages] = useState<MessageData[]>([]);
+  const [allMessages, setAllMessages] = useState<MessageDocument[]>([]);
 
-  const username = data?.user?.name;
+  const name = data?.user?.name;
   const email = data?.user?.email;
+  const user = data?.user as { id: string | undefined };
 
-  const userDataCharged = username && email;
+  const userDataCharged = name && email;
 
   useEffect(() => {
+    async function socketInitializer() {
+      await fetch("/api/socket");
+
+      socket = io();
+
+      socket.on("receive-message", (data: MessageDocument) => {
+        console.log(data)
+        setAllMessages((pre: MessageDocument[]) => [...pre, data]);
+      });
+    }
+
     socketInitializer();
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
   }, []);
-
-  async function socketInitializer() {
-    await fetch("/api/socket");
-
-    socket = io();
-
-    socket.on("receive-message", (data: MessageData) => {
-      setAllMessages((pre: MessageData[]) => [...pre, data]);
-    });
-  }
 
   function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
@@ -47,9 +51,10 @@ const Home = () => {
     console.log("emitted");
 
     socket.emit("send-message", {
-      username,
+      name,
       message,
       email,
+      sender: user.id,
     });
     setMessage("");
   }
@@ -65,7 +70,7 @@ const Home = () => {
           />
           <p>
             <span className="font-medium ">
-              {`${username || '...'} - ${email || '...'}`}
+              {`${name || "..."} - ${email || "..."}`}
             </span>
           </p>
         </div>
@@ -74,8 +79,8 @@ const Home = () => {
       </div>
       {
         <div className="w-full h-full p-6 flex flex-col overflow-y-auto">
-          {allMessages.map(({ username, message }, index) => (
-            <Message key={index} messages={message} username={username} />
+          {allMessages.map(({ name, message }, id) => (
+            <Message key={id} messages={message} username={name} />
           ))}
         </div>
       }
